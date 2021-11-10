@@ -91,6 +91,8 @@ public abstract class LocationTemplate extends PluginConfig {
     /**
      * Method to override the get Method
      * @param root the rootPath to the Location
+     * @param withYawAndPitch true if you want to get yaw and pitch to the Location
+     * @return get a Location from the Config
      */
     protected Location get(@NotNull String root, @NotNull Boolean withYawAndPitch) {
         root = root.toLowerCase(Locale.ROOT);
