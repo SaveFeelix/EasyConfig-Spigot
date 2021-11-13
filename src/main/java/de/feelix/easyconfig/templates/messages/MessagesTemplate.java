@@ -6,8 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * Template to generate a Config with Messages
  */
@@ -20,6 +18,7 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Constructor of MessagesTemplate
+     *
      * @param plugin reference to the Plugin
      */
     public MessagesTemplate(@NotNull JavaPlugin plugin) {
@@ -28,7 +27,8 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Constructor of MessagesTemplate
-     * @param plugin reference to the Plugin
+     *
+     * @param plugin     reference to the Plugin
      * @param folderName the folderName
      */
     public MessagesTemplate(@NotNull JavaPlugin plugin, @NotNull String folderName) {
@@ -37,31 +37,30 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Constructor of MessagesTemplate
-     * @param plugin reference to the Plugin
-     * @param folderName the folderName
+     *
+     * @param plugin         reference to the Plugin
+     * @param folderName     the folderName
      * @param prefixVariable the prefixVariable
      */
     public MessagesTemplate(@NotNull JavaPlugin plugin, @NotNull String folderName, @Nullable String prefixVariable) {
         super(plugin, folderName, "messages");
-        this.prefixVariable = Objects.requireNonNull(prefixVariable, "%prefix%");
+        this.prefixVariable = prefixVariable != null ? prefixVariable : "%prefix%";
+        addDefaultMessages();
     }
 
-    @Override
-    public void addDefault() {
+    /**
+     * Method to add default Messages
+     */
+    private void addDefaultMessages() {
         this.add("prefix", plugin.getName() + " §7>>");
         this.add("load", "%prefix% §6Plugin load§7...");
         this.add("enable", "%prefix% §aPlugin enabled");
         this.add("disable", "%prefix% §cPlugin disabled");
-        addOtherMessages();
     }
 
     /**
-     * Abstract method to add other Default values
-     */
-    public abstract void addOtherMessages();
-
-    /**
      * Getter for the Prefix
+     *
      * @return the Prefix
      */
     public String getPrefix() {
@@ -70,6 +69,7 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Getter for the LoadMessage
+     *
      * @return the LoadMessage as a String
      */
     public String getLoadString() {
@@ -78,6 +78,7 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Getter for the EnableMessage
+     *
      * @return the EnableMessage as a String
      */
     public String getEnableString() {
@@ -86,9 +87,10 @@ public abstract class MessagesTemplate extends PluginConfig {
 
     /**
      * Getter for the DisableMessage
+     *
      * @return the DisableMessage as a String
      */
     public String getDisableString() {
-        return TextUtils.checkOther(this.getFromConfig("disable"), "%prefix%", this.getPrefix());
+        return TextUtils.checkOther(this.getFromConfig("disable"), prefixVariable, this.getPrefix());
     }
 }
